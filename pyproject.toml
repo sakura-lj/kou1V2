@@ -12,3 +12,5 @@ adapters = [
 plugins = ["nonebot_plugin_apscheduler"]
 plugin_dirs = ["kou1_bot/plugins"]
 builtin_plugins = []
+
+
