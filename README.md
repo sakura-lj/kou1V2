@@ -14,9 +14,9 @@
 
 # 3.注意事项
 
-* 我使用的是python3.10,不过目前代码简单，python3.9-12应该都行没有影响
+* 我使用的是python3.9,不过目前代码简单，python3.9-12应该都行没有影响
 
-* 该项目为2.0版本，正在开发中，其实就是将[nonebot1](https://github.com/nonebot/nonebot)升级为使用[nonebot2](https://github.com/nonebot/nonebot2)框架。经过实测运行速度快了一些（ps:扣一更快了），但是内存开销也大了一些。
+* 
 
 ***
 
@@ -29,4 +29,6 @@
 * [LLOneBot](https://github.com/LLOneBot/LLOneBot)
 
 * [LiteLoaderQQNT](https://github.com/LiteLoaderQQNT/LiteLoaderQQNT)
+
+* [LiteLoaderQQNT_Install](https://github.com/Mzdyl/LiteLoaderQQNT_Install)
 
