@@ -167,4 +167,4 @@ pyproject.toml
 .idea/
 
 data.json
-.vscode/settings.json
+.vscode/
