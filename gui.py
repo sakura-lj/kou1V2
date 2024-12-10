@@ -10,10 +10,10 @@ import sys
 import threading
 import signal
 import psutil
+
 data_path = os.path.join(os.path.dirname(sys.executable), "_internal",'data.json')
+#data_path = os.path.join(os.path.dirname(sys.executable),'data.json')
 # os.environ['DATA_PATH'] = data_path
-
-
 
 try:
     print(data_path)
@@ -71,25 +71,25 @@ class BotThread(threading.Thread):
 class Application(tk.Frame):
     def __init__(self, master=None):
         super().__init__(master)
-        self.master = master
-        self.pack(padx=10, pady=10)
-        self.create_widgets()
-        self.process = None
-        self.master.protocol("WM_DELETE_WINDOW", self.on_closing)
+        self.master = master    # 设置主窗口
+        self.pack(padx=10, pady=10)   # 设置窗口的外边距
+        self.create_widgets()   # 创建窗口的控件
+        self.process = None # 存储子进程对象
+        self.master.protocol("WM_DELETE_WINDOW", self.on_closing)   # 设置关闭窗口时的
         self.is_running = False  # 添加一个标志位，表示程序是否正在运行
         self.start_time = datetime.datetime.now()  # 记录程序开始运行的时间
 
     def create_widgets(self):
-        self.create_labels_entries()
-        self.create_buttons()
-        self.create_status_text()
-        self.create_info_text()
+        self.create_labels_entries()    # 创建标签和输入框
+        self.create_buttons()   # 创建按钮
+        self.create_status_text()   # 创建状态文本框
+        self.create_info_text() # 创建信息文本框
 
-    def create_labels_entries(self):
-        self.qq_label = tk.Label(self, text="你的QQ小号:")
-        self.qq_label.grid(row=0, column=0, pady=5, sticky='e')
-        self.qq_entry = tk.Entry(self)
-        self.qq_entry.grid(row=0, column=1, pady=5)
+    def create_labels_entries(self):    # 创建标签和输入框
+        self.qq_label = tk.Label(self, text="你的QQ小号:")  # 创建一个标签
+        self.qq_label.grid(row=0, column=0, pady=5, sticky='e') # 将标签放置在窗口中
+        self.qq_entry = tk.Entry(self)  # 创建一个输入框
+        self.qq_entry.grid(row=0, column=1, pady=5) # 将输入框放置在窗口中
 
         self.keyword_label = tk.Label(self, text="抢活关键词:")
         self.keyword_label.grid(row=1, column=0, pady=5, sticky='e')
@@ -107,23 +107,26 @@ class Application(tk.Frame):
         self.send_entry.grid(row=3, column=1, pady=5)
 
     def create_buttons(self):
-        self.send_button = tk.Button(self, text="更改发送词", command=self.change_send)
-        self.send_button.grid(row=3, column=3, pady=5, sticky='ew')
+        self.add_button = tk.Button(self, text="添加规则", command=lambda: self.modify_rule('add'))
+        self.add_button.grid(row=3, column=2, pady=5, sticky='ew')
+
+        self.delete_button = tk.Button(self, text="删除规则", command=lambda: self.modify_rule('delete'))
+        self.delete_button.grid(row=3, column=3, pady=5, sticky='ew')
 
         self.change_button = tk.Button(self, text="更改QQ号", command=self.change_qq)
         self.change_button.grid(row=0, column=3, pady=5, sticky='ew')
 
-        self.add_keyword_button = tk.Button(self, text="添加关键词", command=self.add_keyword)
-        self.add_keyword_button.grid(row=1, column=2, pady=5, sticky='ew')
+        # self.add_keyword_button = tk.Button(self, text="添加关键词", command=self.add_keyword)
+        # self.add_keyword_button.grid(row=1, column=2, pady=5, sticky='ew')
 
-        self.delete_keyword_button = tk.Button(self, text="删除关键词", command=self.delete_keyword)
-        self.delete_keyword_button.grid(row=1, column=3, pady=5, sticky='ew')
+        # self.delete_keyword_button = tk.Button(self, text="删除关键词", command=self.delete_keyword)
+        # self.delete_keyword_button.grid(row=1, column=3, pady=5, sticky='ew')
 
-        self.add_group_button = tk.Button(self, text="添加群号", command=self.add_group)
-        self.add_group_button.grid(row=2, column=2, pady=5, sticky='ew')
+        # self.add_group_button = tk.Button(self, text="添加群号", command=self.add_group)
+        # self.add_group_button.grid(row=2, column=2, pady=5, sticky='ew')
 
-        self.delete_group_button = tk.Button(self, text="删除群号", command=self.delete_group)
-        self.delete_group_button.grid(row=2, column=3, pady=5, sticky='ew')
+        # self.delete_group_button = tk.Button(self, text="删除群号", command=self.delete_group)
+        # self.delete_group_button.grid(row=2, column=3, pady=5, sticky='ew')
 
         self.start_button = tk.Button(self, text="开始抢活！", command=self.start_bot)
         self.start_button.grid(row=4, column=0, pady=5, sticky='ew')
@@ -132,17 +135,17 @@ class Application(tk.Frame):
         self.stop_button.grid(row=4, column=1, pady=5, sticky='ew')
 
     def create_status_text(self):
-        self.status_text = tk.Text(self, height=5, width=50)
-        self.status_text.grid(row=5, column=0, columnspan=4, pady=10)
-
+        self.status_text = tk.Text(self, height=5, width=50)    # 创建一个文本框
+        self.status_text.grid(row=5, column=0, columnspan=4, pady=10)   # 将文本框放置在窗口中
+        
     def create_info_text(self):
         self.group_info_text = tk.Text(self, height=5, width=50)
         self.group_info_text.grid(row=6, column=0, columnspan=4, pady=10)
         self.group_info_text.insert(tk.END, "当前检测的所有群号与反馈的QQ号还有发送词:\n")
 
-        self.keyword_info_text = tk.Text(self, height=5, width=50)
-        self.keyword_info_text.grid(row=7, column=0, columnspan=4, pady=10)
-        self.keyword_info_text.insert(tk.END, "目前检测的所有关键词:\n")
+        # self.keyword_info_text = tk.Text(self, height=5, width=50)
+        # self.keyword_info_text.grid(row=7, column=0, columnspan=4, pady=10)
+        # self.keyword_info_text.insert(tk.END, "目前检测的所有关键词:\n")
 
         self.status_info_text = tk.Text(self, height=13, width=50)
         self.status_info_text.grid(row=8, column=0, columnspan=4, pady=10)
@@ -153,109 +156,170 @@ class Application(tk.Frame):
             messagebox.showwarning("警告", "请先停止抢活再退出")
         else:  # 否则，正常关闭窗口
             self.master.destroy()
-
-    def change_send(self):
+    
+    def modify_rule(self, action='add'):
+        """统一处理规则的添加和删除"""
         if self.is_running:
             messagebox.showwarning("警告", "正在抢活中，请先停止抢活再进行数据修改")
             return
-        send = self.send_entry.get()
-        if not send:
-            messagebox.showwarning("输入错误", "请输入有效的内容")
+            
+        # 获取输入值
+        group = self.group_entry.get().strip()
+        keyword = self.keyword_entry.get().strip()
+        send_word = self.send_entry.get().strip()
+        
+        # 验证输入
+        if not all([group, keyword, send_word]):
+            messagebox.showwarning("输入错误", "请填写完整的规则信息")
             return
-        data = self.load_data()
-        data['send_word'] = send
-        self.save_data(data)
-        messagebox.showinfo("成功", "发送词已更改")
-        self.status_text.insert(tk.END, f"发送词已保存，现在开始扣{send}\n")
-        self.load_data()  # 更新文本框的内容
+                
+        try:
+            data = self.load_data()
+            
+            if action == 'add':
+                # 检查完全相同的规则
+                for rule in data['checks']:
+                    if rule['group'] == group and rule['keyword'] == keyword:
+                        messagebox.showwarning("添加失败", "该规则已存在")
+                        return
+                
+                # 检查关键词子集
+                subset_rules = []
+                for rule in data['checks']:
+                    if rule['group'] == group:
+                        # 检查新关键词是否是现有关键词的子集
+                        if keyword in rule['keyword']:
+                            subset_rules.append((rule['keyword'], '子集'))
+                        # 检查现有关键词是否是新关键词的子集
+                        elif rule['keyword'] in keyword:
+                            subset_rules.append((rule['keyword'], '父集'))
+                
+                if subset_rules:
+                    warning_msg = "发现以下关键词可能会产生冲突：\n\n"
+                    for rule_keyword, relation in subset_rules:
+                        warning_msg += f"- '{rule_keyword}' (作为{relation})\n"
+                    warning_msg += "\n这可能会导致多次触发，是否继续添加？"
+                    
+                    if messagebox.askyesno("关键词冲突警告", warning_msg):
+                        # 用户选择继续添加
+                        new_rule = {
+                            "group": group,
+                            "keyword": keyword,
+                            "send_word": send_word
+                        }
+                        data['checks'].append(new_rule)
+                        
+                        # 询问是否要删除冲突的规则
+                        if messagebox.askyesno("删除确认", 
+                            "是否要删除冲突的规则？\n(建议保留更长的关键词，删除更短的关键词)"):
+                            # 删除冲突的规则
+                            data['checks'] = [
+                                rule for rule in data['checks']
+                                if not (rule['group'] == group and 
+                                    rule['keyword'] in [kw for kw, _ in subset_rules])
+                            ]
+                            # 重新添加新规则
+                            data['checks'].append(new_rule)
+                            message = "规则已添加，并删除了冲突的规则"
+                        else:
+                            message = "规则已添加，保留了所有规则"
+                    else:
+                        return
+                else:
+                    # 没有冲突，直接添加
+                    new_rule = {
+                        "group": group,
+                        "keyword": keyword,
+                        "send_word": send_word
+                    }
+                    data['checks'].append(new_rule)
+                    message = "规则添加成功"
+                    
+            else:  # delete
+                # 查找并删除匹配的规则
+                original_length = len(data['checks'])
+                data['checks'] = [rule for rule in data['checks'] 
+                                if not (rule['group'] == group and 
+                                    rule['keyword'] == keyword and 
+                                    rule['send_word'] == send_word)]
+                
+                if len(data['checks']) == original_length:
+                    messagebox.showwarning("删除失败", "未找到匹配的规则")
+                    return
+                message = "规则删除成功"
+                
+            # 保存更改
+            self.save_data(data)
+            messagebox.showinfo("成功", message)
+            self.status_text.insert(tk.END, f"{message}\n")
+            self.update_info_display()  # 更新显示
+            
+        except Exception as e:
+            messagebox.showerror("错误", f"操作失败: {str(e)}")
+
 
     def change_qq(self):
+        """修改反馈QQ号"""
         if self.is_running:
             messagebox.showwarning("警告", "正在抢活中，请先停止抢活再进行数据修改")
             return
-        qq = self.qq_entry.get()
+            
+        qq = self.qq_entry.get().strip()
         if not qq:
-            messagebox.showwarning("输入错误", "请输入一个有效的QQ号")
+            messagebox.showwarning("输入错误", "请输入有效的QQ号")
             return
-        data = self.load_data()
-        data['qq'] = qq
-        self.save_data(data)
-        messagebox.showinfo("成功", "QQ号已更新")
-        self.status_text.insert(tk.END, "QQ号已更新\n")
-        self.load_data()  # 更新文本框的内容
+            
+        try:
+            data = self.load_data()
+            data['FeedBackqq'] = qq
+            self.save_data(data)
+            messagebox.showinfo("成功", "反馈QQ号已更新")
+            self.status_text.insert(tk.END, "反馈QQ号已更新\n")
+            self.update_info_display()
+        except Exception as e:
+            messagebox.showerror("错误", f"更新QQ号失败: {str(e)}")
+    
+    def load_data(self):
+        """加载配置数据"""
+        try:
+            if os.path.exists(data_path):
+                with open(data_path, 'r', encoding='utf-8') as f:
+                    data = json.load(f)
+                    self.update_info_display(data)
+                    return data
+            else:
+                # 返回默认配置
+                return {
+                    "FeedBackqq": "",
+                    "checks": [],
+                    "start_date": datetime.datetime.now().strftime('%Y-%m-%d')
+                }
+        except Exception as e:
+            print(f"加载配置失败: {e}")
+            return None
 
-    def add_keyword(self):
-        if self.is_running:
-            messagebox.showwarning("警告", "正在抢活中，请先停止抢活再进行数据修改")
-            return
-        keyword = self.keyword_entry.get()
-        if not keyword:
-            messagebox.showwarning("输入错误", "请输入有效的关键词")
-            return
-        data = self.load_data()
-        if keyword in data['keyword']:
-            messagebox.showwarning("输入错误", "关键词已存在")
-            return
-        data['keyword'].append(keyword)
-        self.save_data(data)
-        messagebox.showinfo("成功", "关键词已添加")
-        self.status_text.insert(tk.END, "关键词已添加\n")
-        self.load_data()  # 更新文本框的内容
-
-    def delete_keyword(self):
-        if self.is_running:
-            messagebox.showwarning("警告", "正在抢活中，请先停止抢活再进行数据修改")
-            return
-        keyword = self.keyword_entry.get().strip()  # 去除前后空格
-        if not keyword:
-            messagebox.showwarning("输入错误", "请输入有效的关键词")
-            return
-        data = self.load_data()
-        if keyword not in data['keyword']:  # 检查关键词是否存在
-            messagebox.showwarning("删除错误", "关键词不存在")
-            return
-        data['keyword'].remove(keyword)
-        self.save_data(data)
-        messagebox.showinfo("成功", "关键词已删除")
-        self.status_text.insert(tk.END, "关键词已删除\n")
-        self.load_data()  # 更新文本框的内容
-
-    def add_group(self):
-        if self.is_running:
-            messagebox.showwarning("警告", "正在抢活中，请先停止抢活再进行数据修改")
-            return
-        group = self.group_entry.get()
-        if not group:
-            messagebox.showwarning("输入错误", "请输入有效的群号")
-            return
-        data = self.load_data()
-        if group in data['group']:
-            messagebox.showwarning("输入错误", "群号已存在")
-            return
-        data['group'].append(group)
-        self.save_data(data)
-        messagebox.showinfo("成功", "群号已添加")
-        self.status_text.insert(tk.END, "群号已添加\n")
-        self.load_data()  # 更新文本框的内容
-
-    def delete_group(self):
-        if self.is_running:
-            messagebox.showwarning("警告", "正在抢活中，请先停止抢活再进行数据修改")
-            return
-        group = self.group_entry.get().strip()  # 去除前后空格
-        if not group:
-            messagebox.showwarning("输入错误", "请输入有效的群号")
-            return
-        data = self.load_data()
-        if group not in data['group']:  # 检查群号是否存在
-            messagebox.showwarning("删除错误", "群号不存在")
-            return
-        data['group'].remove(group)
-        self.save_data(data)
-        messagebox.showinfo("成功", "群号已删除")
-        self.status_text.insert(tk.END, "群号已删除\n")
-        self.load_data()  # 更新文本框的内容
-
+    def update_info_display(self, data=None):
+        """更新信息显示"""
+        if data is None:
+            data = self.load_data()
+        
+        if data:
+            # 更新群组信息显示
+            self.group_info_text.delete(1.0, tk.END)
+            self.group_info_text.insert(tk.END, "当前所有规则:\n")
+            for rule in data['checks']:
+                self.group_info_text.insert(tk.END, 
+                    f"群号: {rule['group']}, 关键词: {rule['keyword']}, "
+                    f"发送词: {rule['send_word']}\n")
+            self.group_info_text.insert(tk.END, 
+                f"\n反馈QQ号: {data['FeedBackqq']}\n")
+            
+            # 更新关键词信息显示
+            # self.keyword_info_text.delete(1.0, tk.END)
+            # self.keyword_info_text.insert(tk.END, "目前检测的所有关键词:\n")
+            # keywords = [rule['keyword'] for rule in data['checks']]
+            # self.keyword_info_text.insert(tk.END, ', '.join(set(keywords)))
+        
     def start_bot(self):
         data = self.load_data()
         start_date = data.get('start_date')
@@ -285,28 +349,6 @@ class Application(tk.Frame):
             self.load_data()  # 更新文本框的内容
             self.is_running = True  # 当程序运行时，设置标志位为True
 
-    # def stop_bot(self):
-    #     if self.is_running:
-    #         def stop_and_update():
-    #             self.bot_thread.stop()
-    #             while not self.bot_thread.stopped.is_set():  # 等待线程停止
-    #                 time.sleep(0.1)
-    #             messagebox.showinfo("以点击停止，准备检查是否停止")
-    #             if self.bot_thread.stopped.is_set():  # 检查进程是否已经停止
-    #                 self.start_button["text"] = "开始抢活！"
-    #                 self.start_button.config(state='normal')  # 启用“开始抢活！”按钮
-    #                 messagebox.showinfo("停止成功", "机器人已停止")
-    #                 self.status_text.insert(tk.END, "机器人已停止\n")
-    #                 self.is_running = False  # 当程序停止运行时，设置标志位为False
-    #             else:
-    #                 messagebox.showerror("停止失败", "机器人未能成功停止")
-    #
-    #         # 使用一个新的线程来停止进程并更新UI
-    #         threading.Thread(target=stop_and_update).start()
-    #     else:
-    #         messagebox.showinfo("停止失败", "机器人已经停止")
-    #
-
     def stop_bot(self):
         if self.is_running:
             def stop_and_update():
@@ -328,33 +370,14 @@ class Application(tk.Frame):
         else:
             messagebox.showinfo("停止失败", "机器人已经停止")
 
-
-    def load_data(self):
-        if os.path.exists(data_path):
-            with open(data_path, 'r', encoding='utf-8') as f:
-                data = json.load(f)
-                self.group_info_text.delete(1.0, tk.END)
-                self.group_info_text.insert(tk.END,
-                                            "当前所有监测群号:\n" + ', '.join(
-                                                map(str, data['group'])) + "\nQQ号: " +
-                                            data['qq']+
-                                            "\n当前的发送词为: " + data['send_word'] + "\n")
-                # send = data.get('send_word', '')  # 获取 send 字段的值
-                # self.group_info_text.insert(tk.END, f"当前扣的内容为: {send}\n")  # 在文本框中显示 send 字段的值
-                self.keyword_info_text.delete(1.0, tk.END)
-                self.keyword_info_text.insert(tk.END, "目前检测的所有关键词:\n" + ', '.join(data['keyword']))
-                return data
-        else:
-            return {'qq': '', 'keyword': [], 'group': [], 'send_word': ''}
-
     def save_data(self, data):
         with open(data_path, 'w', encoding='utf-8') as f:
             json.dump(data, f, ensure_ascii=False)
 
 def main():
-    root = tk.Tk()
-    root.title("自动抢活神器v1.1.0 design by 风间琉璃")
-    app = Application(master=root)
+    root = tk.Tk()  # 创建一个窗口
+    root.title("自动抢活神器v2.0.0 design by colored-glaze") # 设置窗口标题
+    app = Application(master=root)  # 创建一个应用程序
     app.mainloop()
 
 if __name__ == "__main__":
