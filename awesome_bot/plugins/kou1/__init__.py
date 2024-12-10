@@ -39,10 +39,12 @@ def load_config():
     try:
         # 获取配置文件路径
         if getattr(sys, 'frozen', False):
-            base_path = sys._MEIPASS
-            data_path = Path(base_path) / 'data.json'
+            # 如果是打包后的exe
+            exe_dir = Path(sys.executable).parent
+            data_path = exe_dir / 'data.json'
         else:
-            data_path = Path(sys.executable).parent / 'data.json'
+            # 如果是开发环境
+            data_path = Path(os.path.dirname(os.path.abspath(__file__))) / 'data.json'
         
         print(f"当前读取的json文件路径是: {data_path}")
         

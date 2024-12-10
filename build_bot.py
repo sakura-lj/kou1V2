@@ -16,6 +16,7 @@ if __name__ == '__main__':
         '--noconfirm',
         '--clean',
         '--onefile',
+        "--windowed",
         # 路径配置
         '--paths', str(current_dir),
 
@@ -31,6 +32,7 @@ if __name__ == '__main__':
 
 
         # 依赖导入
+        '--hidden-import', 'loguru',
         '--hidden-import', 'nonebot',
         '--hidden-import', 'nonebot.plugins',
         '--hidden-import', 'nonebot.adapters.onebot.v11',
@@ -41,6 +43,7 @@ if __name__ == '__main__':
         '--hidden-import', 'nonebot_plugin_apscheduler',
         '--hidden-import', 'awesome_bot.plugins',
         '--hidden-import', 'awesome_bot',
+        '--runtime-hook', 'runtime_hook.py',
         # 主程序
         'bot.py'
     ]
