@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import datetime
 import time
 import tkinter as tk
@@ -147,10 +148,32 @@ class Application(tk.Frame):
         # self.keyword_info_text.grid(row=7, column=0, columnspan=4, pady=10)
         # self.keyword_info_text.insert(tk.END, "目前检测的所有关键词:\n")
 
-        self.status_info_text = tk.Text(self, height=13, width=50)
+        # self.status_info_text = tk.Text(self, height=16, width=50)
+        # self.status_info_text.grid(row=8, column=0, columnspan=4, pady=10)
+        # self.status_info_text.insert(tk.END, "使用提示！！！(必看):\n\n1.首先设置你的QQ小号，这是当机器人自动扣了活以后，会像该QQ号发送是否撤回提示。可以设置成QQ小号，或者男/女朋友的号，当然也可以不设置。\n2.设置抢活关键词，一次只能设置一个，可以多次设置。这个你可以看你们组长每次发任务时一般会有个什么重复出现的词语或句子\n3.设置检测的群号，就是你们支部派任务的群，该脚本只会在你设置的群号里面扣发送词，也可以设置多个。\n4.设置你想扣什么，就是在指定群聊检测到关键词时扣什么例如：1，你可更改为数字，中文以及等等。\n\n有bug可以反馈邮箱2900153778@qq.com或者github提issues，反馈时请截屏错误提示。\n因为使用了pyinstaller打包，可能报毒，但是源码全部开源在github:https://github.com/sakura-lj/kou1V2，可以自行审查")
+            # 添加标签配置
+        self.status_info_text = tk.Text(self, height=18, width=50)
         self.status_info_text.grid(row=8, column=0, columnspan=4, pady=10)
-        self.status_info_text.insert(tk.END, "使用提示！！！！(必先看):\n1.首先设置你的QQ小号，这是抢到活时或者扣了发送词以后会提示你要不要撤回的。可以设置成QQ小号，或者男/女朋友的号，当然也可以不设置。\n2.设置触发关键词，一次只能设置一个，可以多次设置。这个你可以看你们组长每次发任务时一般会有个什么重复出现的词语，默认关键词：扣一，扣1\n3.设置检测的群号，就是你们支部派任务的群，该脚本只会在你设置的群号里面扣发送词，也可以设置多个。\n4.设置你想扣什么，就是在检测到关键词时扣什么例如：1，你可更改为数字，中文以及等等。\n还有什么问题可以咨询qq:2900153778，但是咨询了我也不一定理Y(^o^)Y")
-
+        self.status_info_text.tag_configure("bold", font=("TkDefaultFont", 10, "bold"))
+        self.status_info_text.tag_configure("italic", font=("TkDefaultFont", 10, "italic"))
+        
+        # 插入带格式的文本
+        self.status_info_text.insert(tk.END, "使用提示！！！(必看):\n\n", "bold")
+        self.status_info_text.insert(tk.END, "1.", "bold")
+        self.status_info_text.insert(tk.END, "首先设置你的QQ小号，这是当机器人自动扣了活以后，会像该QQ号发送是否撤回提示。可以设置成QQ小号，或者男/女朋友的号，当然也可以不设置。\n")
+        self.status_info_text.insert(tk.END, "2.", "bold")
+        self.status_info_text.insert(tk.END, "设置抢活关键词，一次只能设置一个，可以多次设置。这个你可以看你们组长每次发任务时一般会有个什么重复出现的词语或句子\n")
+        self.status_info_text.insert(tk.END, "3.", "bold")
+        self.status_info_text.insert(tk.END, "设置检测的群号，就是你们支部派任务的群，该脚本只会在你设置的群号里面扣发送词，也可以设置多个。\n")
+        self.status_info_text.insert(tk.END, "4.", "bold")
+        self.status_info_text.insert(tk.END, "设置你想扣什么，就是在指定群聊检测到关键词时扣什么例如：1，你可更改为数字，中文以及等等。\n\n")
+        
+        self.status_info_text.insert(tk.END, "有bug可以反馈邮箱")
+        self.status_info_text.insert(tk.END, "2900153778@qq.com")
+        self.status_info_text.insert(tk.END, "或者github提issues，反馈时请截屏错误提示。\n")
+        self.status_info_text.insert(tk.END, "因为使用了pyinstaller打包，可能报毒，但是源码全部开源在")
+        self.status_info_text.insert(tk.END, "github:https://github.com/sakura-lj/kou1V2")
+        self.status_info_text.insert(tk.END, "，可以自行审查",)
     def on_closing(self):
         if self.is_running:  # 如果程序正在运行，弹出警告消息
             messagebox.showwarning("警告", "请先停止抢活再退出")
