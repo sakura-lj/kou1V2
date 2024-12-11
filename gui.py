@@ -160,7 +160,7 @@ class Application(tk.Frame):
         # 插入带格式的文本
         self.status_info_text.insert(tk.END, "使用提示！！！(必看):\n\n", "bold")
         self.status_info_text.insert(tk.END, "1.", "bold")
-        self.status_info_text.insert(tk.END, "首先设置你的QQ小号，这是当机器人自动扣了活以后，会像该QQ号发送是否撤回提示。可以设置成QQ小号，或者男/女朋友的号，当然也可以不设置。\n")
+        self.status_info_text.insert(tk.END, "首先设置你的QQ小号，这是当机器人自动扣了活以后，会像该QQ号发送是否撤回提示。可以设置成QQ小号，或者男/女朋友的号，当然也可以不设置。但是你可以通过你的小号向你的大号发送“/撤回”命令来撤回机器人发送的消息\n")
         self.status_info_text.insert(tk.END, "2.", "bold")
         self.status_info_text.insert(tk.END, "设置抢活关键词，一次只能设置一个，可以多次设置。这个你可以看你们组长每次发任务时一般会有个什么重复出现的词语或句子\n")
         self.status_info_text.insert(tk.END, "3.", "bold")
