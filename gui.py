@@ -144,6 +144,18 @@ class Application(tk.Frame):
         self.group_info_text.grid(row=6, column=0, columnspan=4, pady=10)
         self.group_info_text.insert(tk.END, "当前检测的所有群号与反馈的QQ号还有发送词:\n")
 
+        self.disclaimer_text = tk.Text(self, height=4, width=50)
+        self.disclaimer_text.grid(row=9, column=0, columnspan=4, pady=5)
+        self.disclaimer_text.tag_configure("bold", font=("TkDefaultFont", 9, "bold"))
+        self.disclaimer_text.tag_configure("red", foreground="red")
+
+        disclaimer = (
+        "免责声明：\n"
+        "本软件仅供学习和研究使用。使用本软件产生的任何直接或间接后果及损失，均由使用者本人负责。"
+        "作者不承担任何法律及连带责任。如果不同意本声明，请勿使用本软件。使用即代表同意。\n"
+        )
+        self.disclaimer_text.insert(tk.END, disclaimer,"red")
+        self.disclaimer_text.config(state='disabled')  # 设置为只读
         # self.keyword_info_text = tk.Text(self, height=5, width=50)
         # self.keyword_info_text.grid(row=7, column=0, columnspan=4, pady=10)
         # self.keyword_info_text.insert(tk.END, "目前检测的所有关键词:\n")
