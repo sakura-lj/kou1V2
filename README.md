@@ -7,10 +7,14 @@
 对比V1运行速度更快了，但是内存开销更大
 
 # 2. 使用方法
+[1] python环境运行
 
 （1）安装好环境，建议用一键安装工具：[install_llob](https://github.com/super1207/install_llob)，或者[LiteLoaderQQNT_Install](https://github.com/Mzdyl/LiteLoaderQQNT_Install)
 
-（2）clone代码，然后运行bot.c，即可实现
+（2）clone代码，然后运行gui.c，即可实现
+
+[2] 打包环境运行
+Releases中下载压缩包，然后运行“扣1神器v2.0.0.exe”，即可
 
 # 3.注意事项
 
