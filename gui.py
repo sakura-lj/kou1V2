@@ -186,6 +186,7 @@ class Application(tk.Frame):
         self.status_info_text.insert(tk.END, "因为使用了pyinstaller打包，可能报毒，但是源码全部开源在")
         self.status_info_text.insert(tk.END, "github:https://github.com/sakura-lj/kou1V2")
         self.status_info_text.insert(tk.END, "，可以自行审查",)
+        self.status_info_text.config(state='disabled')
     def on_closing(self):
         if self.is_running:  # 如果程序正在运行，弹出警告消息
             messagebox.showwarning("警告", "请先停止抢活再退出")
